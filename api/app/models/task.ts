@@ -17,6 +17,9 @@ export default class Task extends BaseModel {
   public completed!: boolean
 
   @column()
+  public priority!: number
+
+  @column()
   public userId!: number
 
   @belongsTo(() => User)

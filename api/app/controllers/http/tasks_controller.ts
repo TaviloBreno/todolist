@@ -8,15 +8,18 @@ export default class TasksController {
     this.taskService = new TaskService()
   }
 
-  public async store({ request, response, auth }: HttpContext) {
+  public async store({ auth, request, response }: HttpContext) {
     try {
       const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado' })
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const data = request.only(['title', 'description'])
-      const task = await user.related('tasks').create(data)
+      const data = request.only(['title', 'description', 'priority'])
+      const task = await user.related('tasks').create({
+        ...data,
+        priority: data.priority || 1,
+      })
 
       return response.status(201).json({
         message: 'Tarefa criada com sucesso!',
@@ -24,7 +27,8 @@ export default class TasksController {
       })
     } catch (error) {
       return response.status(400).json({
-        message: (error as Error).message,
+        message: 'Erro ao criar a tarefa.',
+        error: (error as Error).message,
       })
     }
   }
@@ -37,13 +41,19 @@ export default class TasksController {
       }
 
       const status = request.qs().status
+      const orderBy = request.qs().orderBy || 'created_at'
+      const orderDirection = request.qs().orderDirection || 'asc'
 
-      // Filtra as tarefas com base no status
       const query = user.related('tasks').query()
+
       if (status === 'completed') {
         query.where('completed', true)
       } else if (status === 'pending') {
         query.where('completed', false)
+      }
+
+      if (['created_at', 'title', 'priority'].includes(orderBy)) {
+        query.orderBy(orderBy, orderDirection)
       }
 
       const tasks = await query
