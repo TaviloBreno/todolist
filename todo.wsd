@@ -1,0 +1,38 @@
+@startuml TodolistAPI
+!define TaskModel Entity
+
+' Entidades
+class Task {
+  - id: Int
+  - title: String
+  - description: String
+  - is_completed: Boolean
+  - created_at: DateTime
+  - updated_at: DateTime
+
+  + listTasks(): List<Task>
+  + createTask(title: String, description: String): Task
+  + getTask(id: Int): Task
+  + updateTask(id: Int, title: String, description: String, is_completed: Boolean): Task
+  + deleteTask(id: Int): Boolean
+}
+
+' Controlador
+class TaskController {
+  + index(): List<Task>
+  + store(title: String, description: String): Task
+  + show(id: Int): Task
+  + update(id: Int, title: String, description: String, is_completed: Boolean): Task
+  + destroy(id: Int): Boolean
+}
+
+' Validação
+class TaskValidator {
+  + validateCreate(data: Object): Boolean
+  + validateUpdate(data: Object): Boolean
+}
+
+' Relações
+TaskController --> Task : "Operações CRUD"
+TaskController --> TaskValidator : "Validação"
+@enduml
