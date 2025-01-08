@@ -8,10 +8,15 @@ export default class TasksController {
     this.taskService = new TaskService()
   }
 
-  public async store({ request, response }: HttpContext) {
+  public async store({ request, response, auth }: HttpContext) {
     try {
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado' })
+      }
+
       const data = request.only(['title', 'description'])
-      const task = await this.taskService.createTask(data)
+      const task = await user.related('tasks').create(data)
 
       return response.status(201).json({
         message: 'Tarefa criada com sucesso!',
@@ -24,9 +29,14 @@ export default class TasksController {
     }
   }
 
-  public async index({ response }: HttpContext) {
+  public async index({ response, auth }: HttpContext) {
     try {
-      const tasks = await this.taskService.listTasks()
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado' })
+      }
+
+      const tasks = await user.related('tasks').query()
 
       return response.status(200).json({
         message: 'Tarefas listadas com sucesso!',

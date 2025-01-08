@@ -9,6 +9,13 @@ export default class extends BaseSchema {
       table.string('title', 255).notNullable()
       table.text('description').notNullable()
       table.boolean('completed').defaultTo(false)
+      table
+        .integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE') // Exclui as tarefas se o usuário for deletado
+        .notNullable()
       table.timestamps(true)
     })
   }
