@@ -8,8 +8,8 @@ Gerenciamento de Tarefas
 
  Autenticação e Autorização
 
- ☐ Registro de usuário: Permitir que novos usuários se registrem.
- ☐ Login de usuário: Gerar token JWT para autenticação.
+ ✔ Registro de usuário: Permitir que novos usuários se registrem. @done(25-01-08 14:54)
+ ✔ Login de usuário: Gerar token JWT para autenticação. @done(25-01-08 16:28)
  ☐ Proteção de rotas: Garantir que apenas usuários autenticados possam acessar a API.
 Gerenciamento de Usuários
 

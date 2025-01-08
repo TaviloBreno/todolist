@@ -1,18 +1,11 @@
 import { DateTime } from 'luxon'
-import hash from '@adonisjs/core/services/hash'
-import { compose } from '@adonisjs/core/helpers'
+import Hash from '@adonisjs/core/services/hash'
 import { BaseModel, column, hasMany, beforeSave } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
-import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import Task from './task.js'
 
-const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
-  passwordColumnName: 'password',
-})
-
-export default class User extends compose(BaseModel, AuthFinder) {
+export default class User extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -39,7 +32,19 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @beforeSave()
   public static async hashPassword(user: User) {
     if (user.$dirty.password) {
-      user.password = await hash.make(user.password)
+      user.password = await Hash.make(user.password)
     }
+  }
+
+  public async generateToken(): Promise<string> {
+    const token = await User.accessTokens.create(this)
+    const tokenJson = token.toJSON()
+
+    // Suponha que `tokenJson` seja um objeto com uma propriedade `value` que contém o token
+    if (typeof tokenJson.token === 'string') {
+      return tokenJson.token
+    }
+
+    throw new Error('Falha ao gerar o token')
   }
 }

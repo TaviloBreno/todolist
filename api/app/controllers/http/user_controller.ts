@@ -11,6 +11,7 @@ export default class UsersController {
   public async register({ request, response }: HttpContext) {
     try {
       const data = request.only(['fullName', 'email', 'password'])
+      console.log('Dados recebidos no controller:', data) // Verifique os dados recebidos
       const user = await this.userService.registerUser(data)
 
       return response.status(201).json({
@@ -20,6 +21,31 @@ export default class UsersController {
           fullName: user.fullName,
           email: user.email,
           createdAt: user.createdAt,
+        },
+      })
+    } catch (error) {
+      const status = error instanceof Error && 'status' in error ? (error.status as number) : 500
+      return response.status(status).json({
+        message: (error as Error).message,
+      })
+    }
+  }
+
+  public async login({ request, response }: HttpContext) {
+    try {
+      const { email, password } = request.only(['email', 'password'])
+      const { user, token } = await this.userService.loginUser(email, password)
+
+      return response.status(200).json({
+        message: 'Usuário autenticado com sucesso!',
+        data: {
+          user: {
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+            createdAt: user.createdAt,
+          },
+          token,
         },
       })
     } catch (error) {
