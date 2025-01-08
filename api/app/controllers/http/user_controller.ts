@@ -81,4 +81,33 @@ export default class UsersController {
       })
     }
   }
+
+  public async updateProfile({ auth, request, response }: HttpContext) {
+    try {
+      const user = auth.user // Obtém o usuário autenticado
+
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
+      }
+
+      const data = request.only(['fullName', 'email', 'password']) // Permite apenas os campos relevantes
+      const updatedUser = await this.userService.updateUserProfile(user.id, data)
+
+      return response.status(200).json({
+        message: 'Perfil atualizado com sucesso!',
+        data: {
+          id: updatedUser.id,
+          fullName: updatedUser.fullName,
+          email: updatedUser.email,
+          updatedAt: updatedUser.updatedAt,
+        },
+      })
+    } catch (error) {
+      const status = error instanceof Error && 'status' in error ? (error.status as number) : 500
+      return response.status(status).json({
+        message: 'Erro ao atualizar o perfil.',
+        error: (error as Error).message,
+      })
+    }
+  }
 }

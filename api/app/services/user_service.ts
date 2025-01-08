@@ -45,4 +45,29 @@ export default class UserService {
     }
     return user
   }
+
+  public async updateUserProfile(
+    userId: number,
+    data: { fullName?: string; email?: string; password?: string }
+  ): Promise<User> {
+    const user = await User.find(userId)
+    if (!user) {
+      throw new ValidationException('Usuário não encontrado.')
+    }
+
+    // Valida se o email já está em uso por outro usuário
+    if (data.email && data.email !== user.email) {
+      const emailInUse = await User.findBy('email', data.email)
+      if (emailInUse) {
+        throw new ValidationException('O email já está em uso.')
+      }
+    }
+
+    if (data.fullName) user.fullName = data.fullName
+    if (data.email) user.email = data.email
+    if (data.password) user.password = data.password
+
+    await user.save()
+    return user
+  }
 }

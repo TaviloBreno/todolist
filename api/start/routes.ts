@@ -18,6 +18,7 @@ Router.group(() => {
   Router.delete('/tasks/:id', '#controllers/http/tasks_controller.destroy')
 
   Router.get('/profile', '#controllers/http/user_controller.profile')
+  Router.put('/profile', '#controllers/http/user_controller.updateProfile')
 }).use(middleware.auth({ guards: ['api'] }))
 
 Router.post('/register', '#controllers/http/user_controller.register')
