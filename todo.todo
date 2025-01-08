@@ -1,6 +1,6 @@
 Gerenciamento de Tarefas
 
- ☐ Criar tarefa: Adicionar uma nova tarefa com título e descrição.
+ ✔ Criar tarefa: Adicionar uma nova tarefa com título e descrição. @done(25-01-08 09:07)
  ☐ Listar todas as tarefas: Retornar todas as tarefas criadas.
  ☐ Visualizar uma tarefa específica: Obter detalhes de uma tarefa por ID.
  ☐ Atualizar tarefa: Atualizar título, descrição ou status de conclusão.
