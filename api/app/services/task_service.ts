@@ -47,4 +47,13 @@ export default class TaskService {
 
     return task
   }
+
+  public async deleteTask(id: number): Promise<boolean> {
+    const task = await this.taskRepository.getById(id)
+    if (!task) {
+      throw new NotFoundException(`Tarefa com ID ${id} não encontrada.`)
+    }
+
+    return this.taskRepository.deleteById(id)
+  }
 }

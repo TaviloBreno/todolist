@@ -26,4 +26,14 @@ export default class TaskRepository {
     await task.save()
     return task
   }
+
+  public async deleteById(id: number): Promise<boolean> {
+    const task = await Task.find(id)
+    if (!task) {
+      return false
+    }
+
+    await task.delete()
+    return true
+  }
 }

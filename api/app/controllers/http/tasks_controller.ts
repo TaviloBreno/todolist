@@ -74,4 +74,17 @@ export default class TasksController {
       })
     }
   }
+
+  public async destroy({ params, response }: HttpContext) {
+    try {
+      await this.taskService.deleteTask(params.id)
+
+      return response.status(204).send({})
+    } catch (error) {
+      return response.status(404).json({
+        message: 'Tarefa não encontrada.',
+        error: (error as Error).message,
+      })
+    }
+  }
 }
