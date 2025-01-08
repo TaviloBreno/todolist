@@ -40,27 +40,32 @@ export default class TasksController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const status = request.qs().status
-      const orderBy = request.qs().orderBy || 'created_at'
-      const orderDirection = request.qs().orderDirection || 'asc'
+      const status = request.qs().status // Filtro por status
+      const orderBy = request.qs().orderBy || 'created_at' // Ordenação padrão
+      const orderDirection = request.qs().orderDirection || 'asc' // Direção padrão
+      const page = request.qs().page || 1 // Página atual
+      const limit = request.qs().limit || 10 // Limite de tarefas por página
 
       const query = user.related('tasks').query()
 
+      // Aplicar filtro de status
       if (status === 'completed') {
         query.where('completed', true)
       } else if (status === 'pending') {
         query.where('completed', false)
       }
 
+      // Aplicar ordenação
       if (['created_at', 'title', 'priority'].includes(orderBy)) {
         query.orderBy(orderBy, orderDirection)
       }
 
-      const tasks = await query
+      // Paginação
+      const tasks = await query.paginate(page, limit)
 
       return response.status(200).json({
         message: 'Tarefas listadas com sucesso!',
-        data: tasks,
+        data: tasks.toJSON(),
       })
     } catch (error) {
       return response.status(500).json({
