@@ -55,4 +55,23 @@ export default class TasksController {
       })
     }
   }
+
+  public async update({ params, request, response }: HttpContext) {
+    try {
+      const data = request.only(['title', 'description', 'completed'])
+      const task = await this.taskService.updateTask(params.id, data)
+
+      return response.status(200).json({
+        message: 'Tarefa atualizada com sucesso!',
+        data: task,
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const statusCode = error instanceof Error && 'status' in error ? (error as any).status : 500
+
+      return response.status(statusCode).send({
+        message: errorMessage,
+      })
+    }
+  }
 }

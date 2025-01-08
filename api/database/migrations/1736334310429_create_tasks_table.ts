@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('title', 255).notNullable()
       table.text('description').notNullable()
+      table.boolean('completed').defaultTo(false)
       table.timestamps(true)
     })
   }
