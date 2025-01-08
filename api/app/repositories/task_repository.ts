@@ -8,4 +8,8 @@ export default class TaskRepository {
   public async getAll(): Promise<Task[]> {
     return Task.query()
   }
+
+  public async getById(id: number): Promise<Task | null> {
+    return Task.find(id)
+  }
 }

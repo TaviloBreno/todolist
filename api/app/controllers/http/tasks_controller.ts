@@ -39,4 +39,20 @@ export default class TasksController {
       })
     }
   }
+
+  public async show({ params, response }: HttpContext) {
+    try {
+      const task = await this.taskService.getTaskById(params.id)
+
+      return response.status(200).json({
+        message: 'Tarefa encontrada!',
+        data: task,
+      })
+    } catch (error) {
+      return response.status(404).json({
+        message: 'Tarefa não encontrada.',
+        error: (error as Error).message,
+      })
+    }
+  }
 }
