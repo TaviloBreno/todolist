@@ -23,4 +23,20 @@ export default class TasksController {
       })
     }
   }
+
+  public async index({ response }: HttpContext) {
+    try {
+      const tasks = await this.taskService.listTasks()
+
+      return response.status(200).json({
+        message: 'Tarefas listadas com sucesso!',
+        data: tasks,
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'Erro ao listar as tarefas.',
+        error: (error as Error).message,
+      })
+    }
+  }
 }

@@ -15,4 +15,8 @@ export default class TaskService {
 
     return this.taskRepository.create(data)
   }
+
+  public async listTasks(): Promise<Task[]> {
+    return this.taskRepository.getAll()
+  }
 }
