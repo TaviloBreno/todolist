@@ -14,12 +14,11 @@ Gerenciamento de Tarefas
 Gerenciamento de Usuários
 
  ✔ Perfil do usuário: Obter os detalhes do perfil autenticado. @done(25-01-08 17:07)
- ☐ Atualizar perfil: Permitir que o usuário atualize informações do perfil.
-☐ Funcionalidades Intermediárias (Melhoram a Experiência do Usuário)
+ ✔ Atualizar perfil: Permitir que o usuário atualize informações do perfil. @done(25-01-08 17:16)
 
 Filtragem e Organização de Tarefas
 
- ☐ Filtrar tarefas por status: Exibir apenas tarefas concluídas ou pendentes.
+ ✔ Filtrar tarefas por status: Exibir apenas tarefas concluídas ou pendentes. @done(25-01-08 19:16)
  ☐ Ordenação de tarefas: Ordenar tarefas por data de criação, título, ou prioridade.
  ☐ Paginação de tarefas: Dividir grandes listas de tarefas em páginas.
 

@@ -29,14 +29,24 @@ export default class TasksController {
     }
   }
 
-  public async index({ auth, response }: HttpContext) {
+  public async index({ auth, request, response }: HttpContext) {
     try {
-      const user = auth.user // Obtém o usuário autenticado
+      const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado' })
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const tasks = await user.related('tasks').query() // Busca as tarefas do usuário
+      const status = request.qs().status
+
+      // Filtra as tarefas com base no status
+      const query = user.related('tasks').query()
+      if (status === 'completed') {
+        query.where('completed', true)
+      } else if (status === 'pending') {
+        query.where('completed', false)
+      }
+
+      const tasks = await query
 
       return response.status(200).json({
         message: 'Tarefas listadas com sucesso!',
