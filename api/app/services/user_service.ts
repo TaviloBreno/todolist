@@ -37,4 +37,12 @@ export default class UserService {
     const token = await user.generateToken()
     return { user, token }
   }
+
+  public async getAuthenticatedUserProfile(userId: number): Promise<User> {
+    const user = await User.findOrFail(userId)
+    if (!user) {
+      throw new ValidationException('Usuário não encontrado.')
+    }
+    return user
+  }
 }

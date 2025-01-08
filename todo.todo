@@ -13,7 +13,7 @@ Gerenciamento de Tarefas
  ✔ Proteção de rotas: Garantir que apenas usuários autenticados possam acessar a API. @done(25-01-08 16:52)
 Gerenciamento de Usuários
 
- ☐ Perfil do usuário: Obter os detalhes do perfil autenticado.
+ ✔ Perfil do usuário: Obter os detalhes do perfil autenticado. @done(25-01-08 17:07)
  ☐ Atualizar perfil: Permitir que o usuário atualize informações do perfil.
 ☐ Funcionalidades Intermediárias (Melhoram a Experiência do Usuário)
 
