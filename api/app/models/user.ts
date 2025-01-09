@@ -40,7 +40,6 @@ export default class User extends BaseModel {
     const token = await User.accessTokens.create(this)
     const tokenJson = token.toJSON()
 
-    // Suponha que `tokenJson` seja um objeto com uma propriedade `value` que contém o token
     if (typeof tokenJson.token === 'string') {
       return tokenJson.token
     }

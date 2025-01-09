@@ -14,7 +14,7 @@ export default class extends BaseSchema {
         .unsigned()
         .references('id')
         .inTable('users')
-        .onDelete('CASCADE') // Exclui as tarefas se o usuário for deletado
+        .onDelete('CASCADE')
         .notNullable()
       table.timestamps(true)
     })

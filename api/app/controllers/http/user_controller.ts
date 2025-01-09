@@ -84,7 +84,7 @@ export default class UsersController {
 
   public async updateProfile({ auth, request, response }: HttpContext) {
     try {
-      const user = auth.user // Obtém o usuário autenticado
+      const user = auth.user
 
       if (!user) {
         return response.status(401).json({ message: 'Usuário não autenticado.' })

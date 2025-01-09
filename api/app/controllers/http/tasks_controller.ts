@@ -40,11 +40,11 @@ export default class TasksController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const status = request.qs().status // Filtro por status
-      const orderBy = request.qs().orderBy || 'created_at' // Ordenação padrão
-      const orderDirection = request.qs().orderDirection || 'asc' // Direção padrão
-      const page = request.qs().page || 1 // Página atual
-      const limit = request.qs().limit || 10 // Limite de tarefas por página
+      const status = request.qs().status
+      const orderBy = request.qs().orderBy || 'created_at'
+      const orderDirection = request.qs().orderDirection || 'asc'
+      const page = request.qs().page || 1
+      const limit = request.qs().limit || 10
 
       const query = user.related('tasks').query()
 
