@@ -22,15 +22,8 @@ Filtragem e Organização de Tarefas
  ✔ Ordenação de tarefas: Ordenar tarefas por data de criação, título, ou prioridade. @done(25-01-08 19:36)
  ✔ Paginação de tarefas: Dividir grandes listas de tarefas em páginas. @done(25-01-08 19:43)
 
- Funcionalidades de Qualidade e Segurança
- Boas Práticas de API
-
- ☐ Validação de entrada: Garantir que dados enviados pelo cliente sejam válidos.
- ☐ Tratamento de erros: Responder com mensagens de erro padronizadas (e.g., 400, 404, 500).
- ☐ Documentação da API: Criar uma documentação detalhada (Swagger/OpenAPI).
-
  Testes e Monitoramento
 
- ☐ Testes de unidade: Garantir a qualidade das funcionalidades.
+ ✔ Testes de unidade: Garantir a qualidade das funcionalidades. @done(25-01-08 23:01)
  ☐ Testes de integração: Validar a interação entre os módulos.
  ☐ Logs de atividade: Registrar atividades importantes para depuração e segurança.

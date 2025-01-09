@@ -11,7 +11,7 @@ export default class UsersController {
   public async register({ request, response }: HttpContext) {
     try {
       const data = request.only(['fullName', 'email', 'password'])
-      console.log('Dados recebidos no controller:', data) // Verifique os dados recebidos
+      console.log('Dados recebidos no controller:', data)
       const user = await this.userService.registerUser(data)
 
       return response.status(201).json({
@@ -90,7 +90,7 @@ export default class UsersController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const data = request.only(['fullName', 'email', 'password']) // Permite apenas os campos relevantes
+      const data = request.only(['fullName', 'email', 'password'])
       const updatedUser = await this.userService.updateUserProfile(user.id, data)
 
       return response.status(200).json({
