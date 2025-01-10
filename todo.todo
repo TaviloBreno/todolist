@@ -21,6 +21,36 @@ Filtragem e Organização de Tarefas
  ✔ Filtrar tarefas por status: Exibir apenas tarefas concluídas ou pendentes. @done(25-01-08 19:16)
  ✔ Ordenação de tarefas: Ordenar tarefas por data de criação, título, ou prioridade. @done(25-01-08 19:36)
  ✔ Paginação de tarefas: Dividir grandes listas de tarefas em páginas. @done(25-01-08 19:43)
+✔ Ordenação de tarefas: Ordenar tarefas por data de criação, título, ou prioridade. @done(25-01-09 23:10)
+ ☐ Paginação de tarefas: Dividir grandes listas de tarefas em páginas.
+
+ Gerenciamento Avançado de Tarefas
+
+ ☐ Adicionar prioridade às tarefas: Classificar tarefas por prioridade (Alta, Média, Baixa).
+ ☐ Datas de vencimento: Adicionar uma data limite para conclusão da tarefa.
+ ☐ Notificação de atraso: Marcar ou notificar tarefas atrasadas.
+
+ Funcionalidades Avançadas (Para Diferenciais)
+ Compartilhamento e Colaboração
+ ☐ Compartilhar tarefas: Permitir que usuários compartilhem tarefas com outros usuários.
+ ☐ Tarefas colaborativas: Permitir que múltiplos usuários editem uma mesma tarefa.
+
+ Relatórios e Estatísticas
+
+ ☐ Resumo de tarefas: Gerar relatórios com o número de tarefas pendentes, concluídas e atrasadas.
+ ☐ Estatísticas por período: Exibir tarefas concluídas semanalmente/mensalmente.
+
+ Customização
+ ☐ Categorias de tarefas: Criar categorias personalizadas para organizar tarefas.
+ ☐ Temas personalizados: Suporte para diferentes temas visuais.
+
+    Funcionalidades de Qualidade e Segurança
+    Boas Práticas de API
+
+ ☐ Validação de entrada: Garantir que dados enviados pelo cliente sejam válidos.
+ ☐ Tratamento de erros: Responder com mensagens de erro padronizadas (e.g., 400, 404, 500).
+ ☐ Documentação da API: Criar uma documentação detalhada (Swagger/OpenAPI).
+
 
  Testes e Monitoramento
 

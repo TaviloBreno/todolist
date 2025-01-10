@@ -46,21 +46,23 @@ export default class TasksController {
       const page = request.qs().page || 1
       const limit = request.qs().limit || 10
 
+      const validOrderFields = ['created_at', 'title', 'priority']
+      if (!validOrderFields.includes(orderBy)) {
+        return response.status(400).json({
+          message: `Campo de ordenação inválido. Use: ${validOrderFields.join(', ')}`,
+        })
+      }
+
       const query = user.related('tasks').query()
 
-      // Aplicar filtro de status
       if (status === 'completed') {
         query.where('completed', true)
       } else if (status === 'pending') {
         query.where('completed', false)
       }
 
-      // Aplicar ordenação
-      if (['created_at', 'title', 'priority'].includes(orderBy)) {
-        query.orderBy(orderBy, orderDirection)
-      }
+      query.orderBy(orderBy, orderDirection)
 
-      // Paginação
       const tasks = await query.paginate(page, limit)
 
       return response.status(200).json({
