@@ -9,6 +9,8 @@
 
 import Router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import AutoSwagger from 'adonis-autoswagger'
+import swagger from '#config/swagger'
 
 Router.group(() => {
   Router.post('/tasks', '#controllers/http/tasks_controller.store')
@@ -26,3 +28,11 @@ Router.group(() => {
 
 Router.post('/register', '#controllers/http/user_controller.register')
 Router.post('/login', '#controllers/http/user_controller.login')
+
+Router.get('/swagger', async () => {
+  return AutoSwagger.default.docs(Router.toJSON(), swagger)
+})
+
+Router.get('/docs', async () => {
+  return AutoSwagger.default.ui('/swagger', swagger)
+})

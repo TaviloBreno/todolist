@@ -55,6 +55,7 @@
     "@japa/assert": "^4.0.1",
     "@japa/plugin-adonisjs": "^3.0.1",
     "@vinejs/vine": "^3.0.0",
+    "adonis-autoswagger": "^3.64.0",
     "luxon": "^3.5.0",
     "mysql2": "^3.12.0",
     "reflect-metadata": "^0.2.2"
