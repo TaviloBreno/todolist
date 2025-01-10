@@ -1,14 +1,23 @@
 {
   "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "compilerOptions": {
+    "outDir": "build",
     "rootDir": "./",
-    "outDir": "./build",
+    "sourceMap": true,
     "strict": true,
-    "baseUrl": "./src",
-    "paths": {
-      "#repositories/*": [
-        "repositories/*"
-      ]
-    }
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext",
+    "types": [
+      "@adonisjs/core",
+      "@adonisjs/auth"
+    ]
   }
 }

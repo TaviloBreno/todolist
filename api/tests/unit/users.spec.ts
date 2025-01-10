@@ -1,8 +1,9 @@
-import { test } from '@japa/runner'
+import { describe, it } from 'node:test'
+import assert from 'node:assert/strict'
 import User from '#models/user'
 
-test.group('Users', () => {
-  test('Criar usuário', async ({ assert }) => {
+describe('Users', () => {
+  it('Criar usuário', async () => {
     // Gera um e-mail único para cada execução do teste
     const uniqueEmail = `teste-${Date.now()}@exemplo.com`
 
@@ -16,7 +17,7 @@ test.group('Users', () => {
     assert.equal(user.email, uniqueEmail)
   })
 
-  test('Validação de email duplicado', async ({ assert }) => {
+  it('Validação de email duplicado', async () => {
     // Gera um e-mail único para cada execução do teste
     const uniqueEmail = `teste-${Date.now()}@exemplo.com`
 
@@ -32,9 +33,12 @@ test.group('Users', () => {
         email: uniqueEmail,
         password: 'senha1234',
       })
+
+      // Se não lançar erro, o teste falha
+      assert.fail('Deveria ter lançado um erro de email duplicado')
     } catch (error) {
       // Verifica se o erro foi lançado corretamente
-      assert.exists(error)
+      assert.ok(error instanceof Error)
     }
   })
 })

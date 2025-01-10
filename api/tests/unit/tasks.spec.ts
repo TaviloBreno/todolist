@@ -1,9 +1,10 @@
-import { test } from '@japa/runner'
+import { describe, it } from 'node:test'
+import assert from 'node:assert/strict'
 import Task from '#models/task'
 import User from '#models/user'
 
-test.group('Tasks', () => {
-  test('Criar uma nova tarefa', async ({ assert }) => {
+describe('Tasks', () => {
+  it('Criar uma nova tarefa', async () => {
     // Gera um e-mail único para cada execução do teste
     const uniqueEmail = `teste-${Date.now()}@exemplo.com`
 
@@ -26,7 +27,7 @@ test.group('Tasks', () => {
     assert.equal(task.priority, 2)
   })
 
-  test('Listar tarefas por usuário', async ({ assert }) => {
+  it('Listar tarefas por usuário', async () => {
     // Gera um e-mail único para cada execução do teste
     const uniqueEmail = `teste-${Date.now()}@exemplo.com`
 
@@ -46,10 +47,10 @@ test.group('Tasks', () => {
     const tasks = await Task.query().where('userId', user.id)
 
     // Verifica se as tarefas foram criadas corretamente
-    assert.lengthOf(tasks, 2)
+    assert.strictEqual(tasks.length, 2)
   })
 
-  test('Ordenar tarefas por prioridade', async ({ assert }) => {
+  it('Ordenar tarefas por prioridade', async () => {
     // Gera um e-mail único para cada execução do teste
     const uniqueEmail = `teste-${Date.now()}@exemplo.com`
 
@@ -69,7 +70,7 @@ test.group('Tasks', () => {
     const tasks = await Task.query().where('userId', user.id).orderBy('priority', 'desc')
 
     // Verifica se as tarefas foram ordenadas corretamente
-    assert.equal(tasks[0].priority, 3) // A primeira tarefa deve ter prioridade 3
-    assert.equal(tasks[1].priority, 1) // A segunda tarefa deve ter prioridade 1
+    assert.strictEqual(tasks[0].priority, 3) // A primeira tarefa deve ter prioridade 3
+    assert.strictEqual(tasks[1].priority, 1) // A segunda tarefa deve ter prioridade 1
   })
 })

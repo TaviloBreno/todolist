@@ -33,12 +33,10 @@
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.8.2",
+    "@adonisjs/auth": "^9.3.0",
     "@adonisjs/eslint-config": "^2.0.0-beta.6",
     "@adonisjs/prettier-config": "^1.4.0",
     "@adonisjs/tsconfig": "^1.4.0",
-    "@japa/api-client": "^2.0.4",
-    "@japa/assert": "^3.0.0",
-    "@japa/plugin-adonisjs": "^3.0.1",
     "@japa/runner": "^3.1.4",
     "@swc/core": "1.10.1",
     "@types/luxon": "^3.4.2",
@@ -51,10 +49,11 @@
     "typescript": "~5.7"
   },
   "dependencies": {
-    "@adonisjs/auth": "^9.3.0",
     "@adonisjs/core": "^6.17.0",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.5.1",
+    "@japa/assert": "^4.0.1",
+    "@japa/plugin-adonisjs": "^3.0.1",
     "@vinejs/vine": "^3.0.0",
     "luxon": "^3.5.0",
     "mysql2": "^3.12.0",
