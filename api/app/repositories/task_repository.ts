@@ -1,4 +1,5 @@
 import Task from '#models/task'
+import { DateTime } from 'luxon'
 
 export default class TaskRepository {
   public async create(data: { title: string; description: string }): Promise<Task> {
@@ -15,15 +16,30 @@ export default class TaskRepository {
 
   public async updateById(
     id: number,
-    data: Partial<{ title: string; description: string; completed: boolean }>
+    data: Partial<{
+      title: string
+      description: string
+      completed: boolean
+      due_date: string | null
+    }>
   ): Promise<Task | null> {
+    // Encontra a tarefa pelo ID
     const task = await Task.find(id)
     if (!task) {
       return null
     }
 
-    task.merge(data)
+    // Atualiza os campos fornecidos
+    if (data.title !== undefined) task.title = data.title
+    if (data.description !== undefined) task.description = data.description
+    if (data.completed !== undefined) task.completed = data.completed
+    if (data.due_date !== undefined) {
+      task.due_date = data.due_date ? DateTime.fromISO(data.due_date) : null
+    }
+
+    // Salva as alterações no banco de dados
     await task.save()
+
     return task
   }
 

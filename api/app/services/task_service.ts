@@ -34,12 +34,26 @@ export default class TaskService {
 
   public async updateTask(
     id: number,
-    data: Partial<{ title: string; description: string; completed: boolean }>
+    data: Partial<{
+      title: string
+      description: string
+      completed: boolean
+      priority: number
+      due_date: string | null
+    }>
   ): Promise<Task> {
-    if (!data.title && !data.description && data.completed === undefined) {
+    const hasDataToUpdate =
+      data.title !== undefined ||
+      data.description !== undefined ||
+      data.completed !== undefined ||
+      data.priority !== undefined ||
+      data.due_date !== undefined
+
+    if (!hasDataToUpdate) {
       throw new ValidationException('Pelo menos um campo deve ser atualizado.')
     }
 
+    // Atualiza a tarefa via repositório
     const task = await this.taskRepository.updateById(id, data)
     if (!task) {
       throw new NotFoundException(`Tarefa com ID ${id} não encontrada.`)

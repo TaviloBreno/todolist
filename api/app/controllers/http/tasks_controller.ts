@@ -15,7 +15,13 @@ export default class TasksController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const data = request.only(['title', 'description', 'priority'])
+      const data = request.only(['title', 'description', 'priority', 'due_date'])
+
+      if (data.due_date && new Date(data.due_date) < new Date()) {
+        return response.status(400).json({
+          message: 'A data de vencimento não pode ser anterior à data atual.',
+        })
+      }
 
       const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
@@ -50,7 +56,7 @@ export default class TasksController {
 
       // Obtém parâmetros da query string
       const status = request.qs().status // Filtro por status (opcional)
-      const orderBy = request.qs().orderBy || 'priority' // Campo para ordenação (prioridade por padrão)
+      const orderBy = request.qs().orderBy || 'priority' || 'due_date'
       const orderDirection = request.qs().orderDirection || 'desc' // Direção da ordenação (decrescente por padrão)
       const page = Number(request.qs().page) || 1 // Página atual
       const limit = Number(request.qs().limit) || 10 // Limite de itens por página
@@ -110,16 +116,22 @@ export default class TasksController {
 
   public async update({ params, request, response }: HttpContext) {
     try {
-      // Obtém os campos permitidos para atualização
-      const data = request.only(['title', 'description', 'completed', 'priority'])
+      const data = request.only(['title', 'description', 'completed', 'priority', 'due_date'])
 
-      // Validação do campo `priority`
-      const validPriorities = [1, 2, 3] // 1 = Baixa, 2 = Média, 3 = Alta
+      if (data.due_date && new Date(data.due_date) < new Date()) {
+        return response.status(400).json({
+          message: 'A data de vencimento não pode ser anterior à data atual.',
+        })
+      }
+
+      const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
         return response.status(400).json({
           message: 'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).',
         })
       }
+
+      console.log('data', data)
 
       // Atualiza a tarefa via serviço
       const task = await this.taskService.updateTask(params.id, data)

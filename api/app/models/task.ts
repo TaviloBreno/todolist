@@ -19,6 +19,9 @@ export default class Task extends BaseModel {
   @column()
   public priority!: number
 
+  @column.dateTime()
+  public due_date!: DateTime | null
+
   @column()
   public userId!: number
 
