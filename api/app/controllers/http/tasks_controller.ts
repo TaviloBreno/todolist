@@ -1,6 +1,8 @@
 import { HttpContext } from '@adonisjs/core/http'
 import TaskService from '#services/task_service'
 import Task from '#models/task'
+import NotFoundException from '#exceptions/e_notfoundexception'
+import BadRequestException from '#exceptions/e_validationexception'
 
 export default class TasksController {
   private taskService: TaskService
@@ -13,22 +15,20 @@ export default class TasksController {
     try {
       const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado.' })
+        throw new BadRequestException('Usuário não autenticado.')
       }
 
       const data = request.only(['title', 'description', 'priority', 'due_date'])
 
       if (data.due_date && new Date(data.due_date) < new Date()) {
-        return response.status(400).json({
-          message: 'A data de vencimento não pode ser anterior à data atual.',
-        })
+        throw new BadRequestException('A data de vencimento não pode ser anterior à data atual.')
       }
 
       const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
-        return response.status(400).json({
-          message: `Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).`,
-        })
+        throw new BadRequestException(
+          'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).'
+        )
       }
 
       const task = await user.related('tasks').create({
@@ -41,10 +41,7 @@ export default class TasksController {
         data: task,
       })
     } catch (error) {
-      return response.status(400).json({
-        message: 'Erro ao criar a tarefa.',
-        error: (error as Error).message,
-      })
+      throw new BadRequestException((error as Error).message)
     }
   }
 
@@ -64,9 +61,7 @@ export default class TasksController {
       // Valida o campo de ordenação
       const validOrderFields = ['created_at', 'title', 'priority']
       if (!validOrderFields.includes(orderBy)) {
-        return response.status(400).json({
-          message: `Campo de ordenação inválido. Use: ${validOrderFields.join(', ')}`,
-        })
+        throw new BadRequestException('Campo de ordenação inválido.')
       }
 
       const query = user.related('tasks').query()
@@ -86,10 +81,7 @@ export default class TasksController {
         data: tasks.toJSON(),
       })
     } catch (error) {
-      return response.status(500).json({
-        message: 'Erro ao listar as tarefas.',
-        error: (error as Error).message,
-      })
+      throw new BadRequestException((error as Error).message)
     }
   }
 
@@ -102,10 +94,7 @@ export default class TasksController {
         data: task,
       })
     } catch (error) {
-      return response.status(404).json({
-        message: 'Tarefa não encontrada.',
-        error: (error as Error).message,
-      })
+      throw new NotFoundException('Tarefa não encontrada.')
     }
   }
 
@@ -113,13 +102,11 @@ export default class TasksController {
     try {
       const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado.' })
+        throw new BadRequestException('Usuário não autenticado.')
       }
 
-      // Obtém os dados de atualização
       const data = request.only(['title', 'description', 'completed', 'priority', 'due_date'])
 
-      // Validação da data de vencimento
       if (data.due_date && new Date(data.due_date) < new Date()) {
         return response.status(400).json({
           message: 'A data de vencimento não pode ser anterior à data atual.',
@@ -129,9 +116,9 @@ export default class TasksController {
       // Validação da prioridade
       const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
-        return response.status(400).json({
-          message: 'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).',
-        })
+        throw new BadRequestException(
+          'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).'
+        )
       }
 
       // Verifica se o usuário é o proprietário ou possui permissão de edição
@@ -145,9 +132,7 @@ export default class TasksController {
         .first()
 
       if (!task) {
-        return response.status(403).json({
-          message: 'Você não tem permissão para editar esta tarefa.',
-        })
+        throw new NotFoundException('Tarefa não encontrada.')
       }
 
       // Atualiza a tarefa com os dados permitidos
@@ -174,10 +159,7 @@ export default class TasksController {
 
       return response.status(204).send({})
     } catch (error) {
-      return response.status(404).json({
-        message: 'Tarefa não encontrada.',
-        error: (error as Error).message,
-      })
+      throw new NotFoundException('Tarefa não encontrada.')
     }
   }
 
@@ -185,21 +167,17 @@ export default class TasksController {
     try {
       const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado.' })
+        throw new BadRequestException('Usuário não autenticado.')
       }
 
       const task = await user.related('tasks').query().where('id', params.id).first()
       if (!task) {
-        return response
-          .status(404)
-          .json({ message: 'Tarefa não encontrada ou não pertence a você.' })
+        throw new NotFoundException('Tarefa não encontrada.')
       }
 
       const sharedWith = request.input('shared_with', [])
       if (!Array.isArray(sharedWith)) {
-        return response.status(400).json({
-          message: 'Formato inválido. O campo "shared_with" deve ser uma lista de objetos.',
-        })
+        throw new BadRequestException('O campo "shared_with" deve ser um array.')
       }
 
       const sharedData = sharedWith.reduce((acc, item) => {
@@ -219,10 +197,7 @@ export default class TasksController {
         },
       })
     } catch (error) {
-      return response.status(500).json({
-        message: 'Erro ao compartilhar a tarefa.',
-        error: (error as Error).message,
-      })
+      throw new NotFoundException('Tarefa não encontrada.')
     }
   }
 
@@ -231,7 +206,7 @@ export default class TasksController {
     try {
       const user = auth.user
       if (!user) {
-        return response.status(401).json({ message: 'Usuário não autenticado.' })
+        throw new BadRequestException('Usuário não autenticado.')
       }
 
       const tasks = await user.related('sharedTasks').query()
@@ -241,10 +216,7 @@ export default class TasksController {
         data: tasks,
       })
     } catch (error) {
-      return response.status(500).json({
-        message: 'Erro ao listar as tarefas compartilhadas.',
-        error: (error as Error).message,
-      })
+      throw new NotFoundException('Tarefas compartilhadas com você não encontradas.')
     }
   }
 }
