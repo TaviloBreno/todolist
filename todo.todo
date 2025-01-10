@@ -33,16 +33,7 @@ Filtragem e Organização de Tarefas
  Funcionalidades Avançadas (Para Diferenciais)
  Compartilhamento e Colaboração
  ✔ Compartilhar tarefas: Permitir que usuários compartilhem tarefas com outros usuários. @done(25-01-10 02:02)
- ☐ Tarefas colaborativas: Permitir que múltiplos usuários editem uma mesma tarefa.
-
- Relatórios e Estatísticas
-
- ☐ Resumo de tarefas: Gerar relatórios com o número de tarefas pendentes, concluídas e atrasadas.
- ☐ Estatísticas por período: Exibir tarefas concluídas semanalmente/mensalmente.
-
- Customização
- ☐ Categorias de tarefas: Criar categorias personalizadas para organizar tarefas.
- ☐ Temas personalizados: Suporte para diferentes temas visuais.
+ ✔ Tarefas colaborativas: Permitir que múltiplos usuários editem uma mesma tarefa. @done(25-01-10 02:19)
 
     Funcionalidades de Qualidade e Segurança
     Boas Práticas de API

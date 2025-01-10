@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import TaskService from '#services/task_service'
+import Task from '#models/task'
 
 export default class TasksController {
   private taskService: TaskService
@@ -54,11 +55,10 @@ export default class TasksController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      // Obtém parâmetros da query string
-      const status = request.qs().status // Filtro por status (opcional)
+      const status = request.qs().status
       const orderBy = request.qs().orderBy || 'priority' || 'due_date'
-      const orderDirection = request.qs().orderDirection || 'desc' // Direção da ordenação (decrescente por padrão)
-      const page = Number(request.qs().page) || 1 // Página atual
+      const orderDirection = request.qs().orderDirection || 'desc'
+      const page = Number(request.qs().page) || 1
       const limit = Number(request.qs().limit) || 10
 
       // Valida o campo de ordenação
@@ -69,23 +69,18 @@ export default class TasksController {
         })
       }
 
-      // Constrói a consulta
       const query = user.related('tasks').query()
 
-      // Aplica o filtro por status
       if (status === 'completed') {
         query.where('completed', true)
       } else if (status === 'pending') {
         query.where('completed', false)
       }
 
-      // Aplica a ordenação
       query.orderBy(orderBy, orderDirection)
 
-      // Executa a paginação
       const tasks = await query.paginate(page, limit)
 
-      // Retorna a resposta com os dados paginados
       return response.status(200).json({
         message: 'Tarefas listadas com sucesso!',
         data: tasks.toJSON(),
@@ -114,16 +109,24 @@ export default class TasksController {
     }
   }
 
-  public async update({ params, request, response }: HttpContext) {
+  public async update({ auth, params, request, response }: HttpContext) {
     try {
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
+      }
+
+      // Obtém os dados de atualização
       const data = request.only(['title', 'description', 'completed', 'priority', 'due_date'])
 
+      // Validação da data de vencimento
       if (data.due_date && new Date(data.due_date) < new Date()) {
         return response.status(400).json({
           message: 'A data de vencimento não pode ser anterior à data atual.',
         })
       }
 
+      // Validação da prioridade
       const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
         return response.status(400).json({
@@ -131,8 +134,25 @@ export default class TasksController {
         })
       }
 
-      // Atualiza a tarefa via serviço
-      const task = await this.taskService.updateTask(params.id, data)
+      // Verifica se o usuário é o proprietário ou possui permissão de edição
+      const task = await Task.query()
+        .where('id', params.id)
+        .where((query) => {
+          query.where('user_id', user.id).orWhereHas('sharedWith', (subQuery) => {
+            subQuery.where('shared_with_user_id', user.id).where('can_edit', true)
+          })
+        })
+        .first()
+
+      if (!task) {
+        return response.status(403).json({
+          message: 'Você não tem permissão para editar esta tarefa.',
+        })
+      }
+
+      // Atualiza a tarefa com os dados permitidos
+      task.merge(data)
+      await task.save()
 
       return response.status(200).json({
         message: 'Tarefa atualizada com sucesso!',
@@ -175,13 +195,28 @@ export default class TasksController {
           .json({ message: 'Tarefa não encontrada ou não pertence a você.' })
       }
 
-      const sharedWithUserIds = request.input('shared_with_user_ids', [])
+      const sharedWith = request.input('shared_with', [])
+      if (!Array.isArray(sharedWith)) {
+        return response.status(400).json({
+          message: 'Formato inválido. O campo "shared_with" deve ser uma lista de objetos.',
+        })
+      }
 
-      await task.related('sharedWith').sync(sharedWithUserIds)
+      const sharedData = sharedWith.reduce((acc, item) => {
+        if (item.user_id) {
+          acc[item.user_id] = { can_edit: item.can_edit || false }
+        }
+        return acc
+      }, {})
+
+      await task.related('sharedWith').sync(sharedData)
 
       return response.status(200).json({
         message: 'Tarefa compartilhada com sucesso!',
-        data: task,
+        data: {
+          task_id: task.id,
+          shared_with: sharedWith,
+        },
       })
     } catch (error) {
       return response.status(500).json({

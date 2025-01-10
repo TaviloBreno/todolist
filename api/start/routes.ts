@@ -22,6 +22,7 @@ Router.group(() => {
 
   Router.post('/tasks/:id/share', '#controllers/http/tasks_controller.share')
   Router.get('/tasks/sharedwithme', '#controllers/http/tasks_controller.sharedWithMe')
+  Router.put('/tasks/:id', '#controllers/http/tasks_controller.update')
 }).use(middleware.auth({ guards: ['api'] }))
 
 Router.post('/register', '#controllers/http/user_controller.register')
