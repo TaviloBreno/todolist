@@ -38,7 +38,7 @@ Filtragem e Organização de Tarefas
     Funcionalidades de Qualidade e Segurança
     Boas Práticas de API
 
- ☐ Validação de entrada: Garantir que dados enviados pelo cliente sejam válidos.
+ ✔ Validação de entrada: Garantir que dados enviados pelo cliente sejam válidos. @done(25-01-10 12:33)
  ☐ Tratamento de erros: Responder com mensagens de erro padronizadas (e.g., 400, 404, 500).
  ☐ Documentação da API: Criar uma documentação detalhada (Swagger/OpenAPI).
 
