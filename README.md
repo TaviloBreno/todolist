@@ -8,6 +8,33 @@ O código-fonte está disponível no GitHub:
 
 ---
 
+## Endpoints
+
+A API oferece os seguintes endpoints para gerenciamento de tarefas, usuários e documentação:
+
+### Autenticação
+- **POST /register**: Registra um novo usuário.
+- **POST /login**: Autentica um usuário e retorna um token JWT.
+
+### Perfil do Usuário
+- **GET /profile**: Retorna os detalhes do perfil do usuário autenticado.
+- **PUT /profile**: Atualiza as informações do perfil do usuário autenticado.
+
+### Tarefas
+- **POST /tasks**: Cria uma nova tarefa.
+- **GET /tasks**: Lista todas as tarefas do usuário autenticado.
+- **GET /tasks/:id**: Retorna os detalhes de uma tarefa específica.
+- **PUT /tasks/:id**: Atualiza uma tarefa existente.
+- **DELETE /tasks/:id**: Exclui uma tarefa.
+
+### Compartilhamento de Tarefas
+- **POST /tasks/:id/share**: Compartilha uma tarefa com outros usuários.
+- **GET /tasks/sharedwithme**: Lista as tarefas compartilhadas com o usuário autenticado.
+
+### Documentação
+- **GET /swagger**: Retorna a documentação da API no formato JSON.
+- **GET /docs**: Exibe a interface do Swagger UI para explorar a API.
+
 ## **Principais Funcionalidades**
 - **Criar Tarefa**: Adicionar uma nova tarefa com título e descrição.
 - **Estrutura Modular**: Separação em camadas (Controller, Service, Repository).
@@ -38,3 +65,19 @@ Clone o repositório e instale as dependências:
 git clone https://github.com/TaviloBreno/todolist.git
 cd todolist
 npm install
+```
+Execute as migrations e seeders para configurar o banco de dados:
+```bash
+node ace migration:run
+node ace db:seed
+```
+### **3. Executando a Aplicação**
+Inicie o servidor de desenvolvimento:
+```bash
+node ace serve --watch
+```
+A aplicação estará disponível em `http://localhost:3333`.
+
+### **4. Documentação da API**
+A documentação da API pode ser acessada através do Swagger UI:
+[http://localhost:3333/docs](http://localhost:3333/docs)

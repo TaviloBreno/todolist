@@ -5,9 +5,6 @@ export default class ENotFoundException extends Exception {
     super(message, { status: 404 })
   }
 
-  /**
-   * Handle this exception and return a formatted response
-   */
   public async handle(error: this, { response }: { response: any }) {
     response.status(error.status).send({
       message: error.message,
