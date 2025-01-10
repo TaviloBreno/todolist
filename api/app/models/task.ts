@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import { BaseModel, column, belongsTo, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations' // Corrigido aqui
 import User from '#models/user'
 
@@ -21,6 +21,11 @@ export default class Task extends BaseModel {
 
   @column.dateTime()
   public due_date!: DateTime | null
+
+  @computed()
+  public get isOverdue(): boolean {
+    return this.due_date ? this.due_date < DateTime.local() && !this.completed : false
+  }
 
   @column()
   public userId!: number

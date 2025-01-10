@@ -59,7 +59,7 @@ export default class TasksController {
       const orderBy = request.qs().orderBy || 'priority' || 'due_date'
       const orderDirection = request.qs().orderDirection || 'desc' // Direção da ordenação (decrescente por padrão)
       const page = Number(request.qs().page) || 1 // Página atual
-      const limit = Number(request.qs().limit) || 10 // Limite de itens por página
+      const limit = Number(request.qs().limit) || 10
 
       // Valida o campo de ordenação
       const validOrderFields = ['created_at', 'title', 'priority']
@@ -130,8 +130,6 @@ export default class TasksController {
           message: 'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).',
         })
       }
-
-      console.log('data', data)
 
       // Atualiza a tarefa via serviço
       const task = await this.taskService.updateTask(params.id, data)
