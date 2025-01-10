@@ -16,6 +16,14 @@ export default class TasksController {
       }
 
       const data = request.only(['title', 'description', 'priority'])
+
+      const validPriorities = [1, 2, 3]
+      if (data.priority && !validPriorities.includes(data.priority)) {
+        return response.status(400).json({
+          message: `Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).`,
+        })
+      }
+
       const task = await user.related('tasks').create({
         ...data,
         priority: data.priority || 1,
@@ -41,9 +49,9 @@ export default class TasksController {
       }
 
       // Obtém parâmetros da query string
-      const status = request.qs().status // Filtro por status (optional)
-      const orderBy = request.qs().orderBy || 'created_at' // Campo para ordenação
-      const orderDirection = request.qs().orderDirection || 'asc' // Direção da ordenação
+      const status = request.qs().status // Filtro por status (opcional)
+      const orderBy = request.qs().orderBy || 'priority' // Campo para ordenação (prioridade por padrão)
+      const orderDirection = request.qs().orderDirection || 'desc' // Direção da ordenação (decrescente por padrão)
       const page = Number(request.qs().page) || 1 // Página atual
       const limit = Number(request.qs().limit) || 10 // Limite de itens por página
 
@@ -102,7 +110,18 @@ export default class TasksController {
 
   public async update({ params, request, response }: HttpContext) {
     try {
-      const data = request.only(['title', 'description', 'completed'])
+      // Obtém os campos permitidos para atualização
+      const data = request.only(['title', 'description', 'completed', 'priority'])
+
+      // Validação do campo `priority`
+      const validPriorities = [1, 2, 3] // 1 = Baixa, 2 = Média, 3 = Alta
+      if (data.priority && !validPriorities.includes(data.priority)) {
+        return response.status(400).json({
+          message: 'Prioridade inválida. Use: 1 (Baixa), 2 (Média), ou 3 (Alta).',
+        })
+      }
+
+      // Atualiza a tarefa via serviço
       const task = await this.taskService.updateTask(params.id, data)
 
       return response.status(200).json({
@@ -110,10 +129,11 @@ export default class TasksController {
         data: task,
       })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      // Trata os erros de forma robusta
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
       const statusCode = error instanceof Error && 'status' in error ? (error as any).status : 500
 
-      return response.status(statusCode).send({
+      return response.status(statusCode).json({
         message: errorMessage,
       })
     }
