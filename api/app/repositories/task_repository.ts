@@ -29,7 +29,6 @@ export default class TaskRepository {
       return null
     }
 
-    // Atualiza os campos fornecidos
     if (data.title !== undefined) task.title = data.title
     if (data.description !== undefined) task.description = data.description
     if (data.completed !== undefined) task.completed = data.completed
@@ -37,7 +36,6 @@ export default class TaskRepository {
       task.due_date = data.due_date ? DateTime.fromISO(data.due_date) : null
     }
 
-    // Salva as alterações no banco de dados
     await task.save()
 
     return task

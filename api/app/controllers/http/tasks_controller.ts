@@ -139,7 +139,6 @@ export default class TasksController {
         data: task,
       })
     } catch (error) {
-      // Trata os erros de forma robusta
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
       const statusCode = error instanceof Error && 'status' in error ? (error as any).status : 500
 
@@ -157,6 +156,58 @@ export default class TasksController {
     } catch (error) {
       return response.status(404).json({
         message: 'Tarefa não encontrada.',
+        error: (error as Error).message,
+      })
+    }
+  }
+
+  public async share({ auth, params, request, response }: HttpContext) {
+    try {
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
+      }
+
+      const task = await user.related('tasks').query().where('id', params.id).first()
+      if (!task) {
+        return response
+          .status(404)
+          .json({ message: 'Tarefa não encontrada ou não pertence a você.' })
+      }
+
+      const sharedWithUserIds = request.input('shared_with_user_ids', [])
+
+      await task.related('sharedWith').sync(sharedWithUserIds)
+
+      return response.status(200).json({
+        message: 'Tarefa compartilhada com sucesso!',
+        data: task,
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'Erro ao compartilhar a tarefa.',
+        error: (error as Error).message,
+      })
+    }
+  }
+
+  public async sharedWithMe({ auth, response }: HttpContext) {
+    console.log('sharedWithMe')
+    try {
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado.' })
+      }
+
+      const tasks = await user.related('sharedTasks').query()
+
+      return response.status(200).json({
+        message: 'Tarefas compartilhadas com você listadas com sucesso!',
+        data: tasks,
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'Erro ao listar as tarefas compartilhadas.',
         error: (error as Error).message,
       })
     }

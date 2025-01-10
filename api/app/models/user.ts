@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import Hash from '@adonisjs/core/services/hash'
-import { BaseModel, column, hasMany, beforeSave } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany, beforeSave, manyToMany } from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import Task from './task.js'
 
@@ -46,4 +46,11 @@ export default class User extends BaseModel {
 
     throw new Error('Falha ao gerar o token')
   }
+
+  @manyToMany(() => Task, {
+    pivotTable: 'task_shares',
+    pivotForeignKey: 'shared_with_user_id',
+    pivotRelatedForeignKey: 'task_id',
+  })
+  public sharedTasks!: ManyToMany<typeof Task>
 }

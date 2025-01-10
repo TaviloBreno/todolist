@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, computed } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations' // Corrigido aqui
+import { BaseModel, column, belongsTo, computed, manyToMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 
 export default class Task extends BaseModel {
@@ -38,4 +38,11 @@ export default class Task extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @manyToMany(() => User, {
+    pivotTable: 'task_shares',
+    pivotForeignKey: 'task_id',
+    pivotRelatedForeignKey: 'shared_with_user_id',
+  })
+  public sharedWith!: ManyToMany<typeof User>
 }

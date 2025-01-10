@@ -28,11 +28,11 @@ Filtragem e Organização de Tarefas
 
  ✔ Adicionar prioridade às tarefas: Classificar tarefas por prioridade (Alta, Média, Baixa). @done(25-01-09 23:41)
  ✔ Datas de vencimento: Adicionar uma data limite para conclusão da tarefa. @done(25-01-10 00:42)
- ☐ Notificação de atraso: Marcar ou notificar tarefas atrasadas.
+ ✔ Notificação de atraso: Marcar ou notificar tarefas atrasadas. @done(25-01-10 01:17)
 
  Funcionalidades Avançadas (Para Diferenciais)
  Compartilhamento e Colaboração
- ☐ Compartilhar tarefas: Permitir que usuários compartilhem tarefas com outros usuários.
+ ✔ Compartilhar tarefas: Permitir que usuários compartilhem tarefas com outros usuários. @done(25-01-10 02:02)
  ☐ Tarefas colaborativas: Permitir que múltiplos usuários editem uma mesma tarefa.
 
  Relatórios e Estatísticas

@@ -53,7 +53,6 @@ export default class TaskService {
       throw new ValidationException('Pelo menos um campo deve ser atualizado.')
     }
 
-    // Atualiza a tarefa via repositório
     const task = await this.taskRepository.updateById(id, data)
     if (!task) {
       throw new NotFoundException(`Tarefa com ID ${id} não encontrada.`)
