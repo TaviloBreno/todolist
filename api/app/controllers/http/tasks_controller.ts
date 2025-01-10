@@ -40,12 +40,14 @@ export default class TasksController {
         return response.status(401).json({ message: 'Usuário não autenticado.' })
       }
 
-      const status = request.qs().status
-      const orderBy = request.qs().orderBy || 'created_at'
-      const orderDirection = request.qs().orderDirection || 'asc'
-      const page = request.qs().page || 1
-      const limit = request.qs().limit || 10
+      // Obtém parâmetros da query string
+      const status = request.qs().status // Filtro por status (optional)
+      const orderBy = request.qs().orderBy || 'created_at' // Campo para ordenação
+      const orderDirection = request.qs().orderDirection || 'asc' // Direção da ordenação
+      const page = Number(request.qs().page) || 1 // Página atual
+      const limit = Number(request.qs().limit) || 10 // Limite de itens por página
 
+      // Valida o campo de ordenação
       const validOrderFields = ['created_at', 'title', 'priority']
       if (!validOrderFields.includes(orderBy)) {
         return response.status(400).json({
@@ -53,18 +55,23 @@ export default class TasksController {
         })
       }
 
+      // Constrói a consulta
       const query = user.related('tasks').query()
 
+      // Aplica o filtro por status
       if (status === 'completed') {
         query.where('completed', true)
       } else if (status === 'pending') {
         query.where('completed', false)
       }
 
+      // Aplica a ordenação
       query.orderBy(orderBy, orderDirection)
 
+      // Executa a paginação
       const tasks = await query.paginate(page, limit)
 
+      // Retorna a resposta com os dados paginados
       return response.status(200).json({
         message: 'Tarefas listadas com sucesso!',
         data: tasks.toJSON(),
