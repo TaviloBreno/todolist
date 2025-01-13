@@ -58,7 +58,6 @@ export default class TasksController {
       const page = Number(request.qs().page) || 1
       const limit = Number(request.qs().limit) || 10
 
-      // Valida o campo de ordenação
       const validOrderFields = ['created_at', 'title', 'priority']
       if (!validOrderFields.includes(orderBy)) {
         throw new BadRequestException('Campo de ordenação inválido.')
