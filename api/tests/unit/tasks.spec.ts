@@ -59,4 +59,113 @@ describe('Tasks', () => {
     assert.strictEqual(tasks[0].priority, 3)
     assert.strictEqual(tasks[1].priority, 1)
   })
+
+  it('Atualizar uma tarefa', async () => {
+    const uniqueEmail = `teste-${Date.now()}@exemplo.com`
+
+    const user = await User.create({
+      email: uniqueEmail,
+      password: 'senha123',
+    })
+
+    const task = await Task.create({
+      title: 'Tarefa de Teste',
+      description: 'Descrição da tarefa',
+      priority: 2,
+      userId: user.id,
+    })
+
+    await task.merge({ title: 'Tarefa Atualizada' }).save()
+
+    assert.equal(task.title, 'Tarefa Atualizada')
+  })
+
+  it('Deletar uma tarefa', async () => {
+    const uniqueEmail = `teste-${Date.now()}@exemplo.com`
+
+    const user = await User.create({
+      email: uniqueEmail,
+      password: 'senha123',
+    })
+
+    const task = await Task.create({
+      title: 'Tarefa de Teste',
+      description: 'Descrição da tarefa',
+      priority: 2,
+      userId: user.id,
+    })
+
+    await task.delete()
+
+    const taskDeleted = await Task.find(task.id)
+
+    assert.equal(taskDeleted, null)
+  })
+
+  it('Compartilhar uma tarefa', async () => {
+    const uniqueEmail = `teste-${Date.now()}@exemplo.com`
+    const uniqueEmail2 = `teste-${Date.now() + 1}@exemplo.com`
+
+    const user = await User.create({
+      email: uniqueEmail,
+      password: 'senha123',
+    })
+
+    const user2 = await User.create({
+      email: uniqueEmail2,
+      password: 'senha123',
+    })
+
+    const task = await Task.create({
+      title: 'Tarefa de Teste',
+      description: 'Descrição da tarefa',
+      priority: 2,
+      userId: user.id,
+    })
+
+    await task.related('sharedWith').attach({
+      [user2.id]: { can_edit: false }, // Use a coluna existente `can_edit`
+    })
+
+    const sharedUsers = await task.related('sharedWith').query()
+
+    assert.strictEqual(sharedUsers.length, 1)
+    assert.strictEqual(sharedUsers[0].id, user2.id)
+
+    const sharedTasks = await user2.related('sharedTasks').query()
+
+    assert.strictEqual(sharedTasks.length, 1)
+    assert.strictEqual(sharedTasks[0].id, task.id)
+  })
+
+  it('Listar tarefas compartilhadas comigo', async () => {
+    const uniqueEmail = `teste-${Date.now()}@exemplo.com`
+    const uniqueEmail2 = `teste-${Date.now() + 1}@exemplo.com`
+
+    const user = await User.create({
+      email: uniqueEmail,
+      password: 'senha123',
+    })
+
+    const user2 = await User.create({
+      email: uniqueEmail2,
+      password: 'senha123',
+    })
+
+    const task = await Task.create({
+      title: 'Tarefa de Teste',
+      description: 'Descrição da tarefa',
+      priority: 2,
+      userId: user.id,
+    })
+
+    await task.related('sharedWith').attach({
+      [user2.id]: { can_edit: false },
+    })
+
+    const sharedTasks = await user2.related('sharedTasks').query()
+
+    assert.strictEqual(sharedTasks.length, 1)
+    assert.strictEqual(sharedTasks[0].id, task.id)
+  })
 })

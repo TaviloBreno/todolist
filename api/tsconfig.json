@@ -17,7 +17,9 @@
     "moduleResolution": "NodeNext",
     "types": [
       "@adonisjs/core",
-      "@adonisjs/auth"
+      "@adonisjs/auth",
+      "node",
+      "jest"
     ],
     "paths": {
       "#repositories/*": [

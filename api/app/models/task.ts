@@ -43,7 +43,7 @@ export default class Task extends BaseModel {
     pivotTable: 'task_shares',
     pivotForeignKey: 'task_id',
     pivotRelatedForeignKey: 'shared_with_user_id',
-    pivotColumns: ['shared_at'],
+    pivotColumns: ['can_edit'], // Apenas colunas existentes
   })
   public sharedWith!: ManyToMany<typeof User>
 }
