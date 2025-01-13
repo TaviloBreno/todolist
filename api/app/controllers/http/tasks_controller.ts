@@ -113,7 +113,6 @@ export default class TasksController {
         })
       }
 
-      // Validação da prioridade
       const validPriorities = [1, 2, 3]
       if (data.priority && !validPriorities.includes(data.priority)) {
         throw new BadRequestException(
@@ -121,7 +120,6 @@ export default class TasksController {
         )
       }
 
-      // Verifica se o usuário é o proprietário ou possui permissão de edição
       const task = await Task.query()
         .where('id', params.id)
         .where((query) => {
@@ -135,7 +133,6 @@ export default class TasksController {
         throw new NotFoundException('Tarefa não encontrada.')
       }
 
-      // Atualiza a tarefa com os dados permitidos
       task.merge(data)
       await task.save()
 
