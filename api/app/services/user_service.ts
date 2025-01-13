@@ -1,41 +1,46 @@
 import User from '#models/user'
 import ValidationException from '#exceptions/e_validationexception'
 import Hash from '@adonisjs/core/services/hash'
+import UserRepository from '../repositories/user_repository.js'
 
 export default class UserService {
+  private userRepository: UserRepository
+
+  constructor() {
+    this.userRepository = new UserRepository()
+  }
+
   public async registerUser(data: {
     fullName?: string
     email: string
     password: string
   }): Promise<User> {
-    const existingUser = await User.findBy('email', data.email)
+    const existingUser = await this.userRepository.getByEmail(data.email)
     if (existingUser) {
       throw new ValidationException('O email já está em uso.')
     }
 
-    const user = await User.create(data)
+    const user = await this.userRepository.create(data)
     return user
   }
 
   public async loginUser(email: string, password: string): Promise<{ user: User; token: string }> {
-    const user = await User.findBy('email', email)
-
+    const user = await this.userRepository.getByEmail(email)
     if (!user) {
       throw new ValidationException('Credenciais inválidas.')
     }
 
     const passwordValid = await Hash.verify(user.password, password.trim())
-
     if (!passwordValid) {
       throw new ValidationException('Credenciais inválidas.')
     }
 
-    const token = await user.generateToken()
+    const token = await this.userRepository.generateToken(user)
     return { user, token }
   }
 
   public async getAuthenticatedUserProfile(userId: number): Promise<User> {
-    const user = await User.findOrFail(userId)
+    const user = await this.userRepository.getById(userId)
     if (!user) {
       throw new ValidationException('Usuário não encontrado.')
     }
@@ -46,24 +51,23 @@ export default class UserService {
     userId: number,
     data: { fullName?: string; email?: string; password?: string }
   ): Promise<User> {
-    const user = await User.find(userId)
+    const user = await this.userRepository.getById(userId)
     if (!user) {
       throw new ValidationException('Usuário não encontrado.')
     }
 
-    // Valida se o email já está em uso por outro usuário
     if (data.email && data.email !== user.email) {
-      const emailInUse = await User.findBy('email', data.email)
+      const emailInUse = await this.userRepository.getByEmail(data.email)
       if (emailInUse) {
         throw new ValidationException('O email já está em uso.')
       }
     }
 
-    if (data.fullName) user.fullName = data.fullName
-    if (data.email) user.email = data.email
-    if (data.password) user.password = data.password
+    const updatedUser = await this.userRepository.updateById(userId, data)
+    if (!updatedUser) {
+      throw new ValidationException('Falha ao atualizar o perfil do usuário.')
+    }
 
-    await user.save()
-    return user
+    return updatedUser
   }
 }

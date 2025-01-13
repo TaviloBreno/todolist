@@ -18,6 +18,11 @@
     "types": [
       "@adonisjs/core",
       "@adonisjs/auth"
-    ]
+    ],
+    "paths": {
+      "#repositories/*": [
+        "./app/repositories/*"
+      ]
+    }
   }
 }
