@@ -7,9 +7,9 @@ Checklist: Desenvolvimento do Frontend para a API de Tarefas
 2. Configuração do Projeto
  Inicializar o Projeto Nuxt:
 ✔ Criar o projeto com npx nuxi init. @done(25-01-13 14:29)
-☐ Instalar dependências necessárias (e.g., Tailwind CSS, Pinia).
+✔ Instalar dependências necessárias (e.g., Tailwind CSS, Pinia). @done(25-01-13 14:36)
  Configurar Estrutura de Diretórios:
-☐ Criar pastas: pages, components, layouts, store, assets, composables.
+✔ Criar pastas: pages, components, layouts, store, assets, composables. @done(25-01-13 14:37)
  Configurar Variáveis de Ambiente:
 ☐ Configurar a base URL da API em .env e referenciá-la no nuxt.config.ts.
 3. Implementação da Autenticação
