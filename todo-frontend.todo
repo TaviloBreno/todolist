@@ -1,0 +1,63 @@
+Checklist: Desenvolvimento do Frontend para a API de Tarefas
+
+1. Planejamento Inicial
+ ✔ Analisar os Endpoints da API: Compreender como cada endpoint funciona, seus parâmetros e respostas. @done(25-01-13 14:21)
+ ✔ Definir Estrutura do Projeto: Organizar o projeto com base em frameworks como Nuxt.js, utilizando boas práticas e princípios de Clean Code. @done(25-01-13 14:23)
+ ✔ Configurar Ferramentas: Configurar ambiente de desenvolvimento com Node.js, Nuxt.js, ESLint, Prettier e Tailwind CSS. @done(25-01-13 14:28)
+2. Configuração do Projeto
+ Inicializar o Projeto Nuxt:
+✔ Criar o projeto com npx nuxi init. @done(25-01-13 14:29)
+☐ Instalar dependências necessárias (e.g., Tailwind CSS, Pinia).
+ Configurar Estrutura de Diretórios:
+☐ Criar pastas: pages, components, layouts, store, assets, composables.
+ Configurar Variáveis de Ambiente:
+☐ Configurar a base URL da API em .env e referenciá-la no nuxt.config.ts.
+3. Implementação da Autenticação
+ Criar Tela de Registro:
+☐ Formulário com campos de nome, email e senha.
+☐ Integração com o endpoint POST /register.
+ Criar Tela de Login:
+☐ Formulário com campos de email e senha.
+☐ Integração com o endpoint POST /login.
+☐ Armazenar o token JWT no armazenamento local ou cookies.
+ Configurar Middleware de Autenticação:
+☐ Proteger rotas privadas verificando a existência de um token válido.
+4. Perfil do Usuário
+ Criar Página de Perfil:
+☐ Exibir informações do usuário obtidas do endpoint GET /profile.
+ Criar Funcionalidade de Edição de Perfil:
+☐ Formulário para atualizar dados do perfil com PUT /profile.
+5. Gerenciamento de Tarefas
+ Criar Página para Listagem de Tarefas:
+☐ Integração com o endpoint GET /tasks.
+☐ Exibir lista de tarefas com título, status e opções (editar, excluir).
+ Criar Funcionalidade de Adicionar Tarefas:
+☐ Formulário para criação de novas tarefas com POST /tasks.
+ Criar Página de Detalhes da Tarefa:
+☐ Mostrar detalhes da tarefa específica com GET /tasks/:id.
+ Criar Funcionalidade de Atualização de Tarefa:
+☐ Formulário para editar tarefas existentes com PUT /tasks/:id.
+ Criar Funcionalidade de Exclusão de Tarefas:
+☐ Botão para excluir uma tarefa com DELETE /tasks/:id.
+6. Compartilhamento de Tarefas
+ Criar Funcionalidade de Compartilhar Tarefa:
+☐ Formulário para inserir email de usuários com quem compartilhar, integrado ao endpoint POST /tasks/:id/share.
+ Criar Página de Tarefas Compartilhadas:
+☐ Listar tarefas compartilhadas com o usuário usando GET /tasks/sharedwithme.
+7. Integração com Documentação da API
+ Criar Página de Documentação:
+☐ Adicionar botão ou link que redirecione o usuário para a documentação em GET /docs.
+8. Estilização e Responsividade
+ Configurar Tailwind CSS:
+☐ Criar um arquivo base de estilos e componentes reutilizáveis (botões, formulários, tabelas).
+ Adicionar Estilização a Todas as Páginas:
+☐ Certificar-se de que o design seja consistente em todas as telas.
+ Testar Responsividade:
+Garantir que o layout funcione em dispositivos móveis, tablets e desktops.
+9. Testes e Depuração
+ Testar Funcionalidades:
+☐ Realizar testes manuais para cada funcionalidade (login, criação de tarefa, compartilhamento).
+ Depurar Erros:
+☐ Verificar o console e corrigir quaisquer erros de integração ou de UI.
+ Configurar Testes Automatizados:
+☐ Escrever testes com frameworks como Cypress ou Jest para validar a interface.
