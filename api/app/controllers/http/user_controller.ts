@@ -11,7 +11,6 @@ export default class UsersController {
   public async register({ request, response }: HttpContext) {
     try {
       const data = request.only(['fullName', 'email', 'password'])
-      console.log('Dados recebidos no controller:', data)
       const user = await this.userService.registerUser(data)
 
       return response.status(201).json({
@@ -47,6 +46,26 @@ export default class UsersController {
           },
           token,
         },
+      })
+    } catch (error) {
+      const status = error instanceof Error && 'status' in error ? (error.status as number) : 500
+      return response.status(status).json({
+        message: (error as Error).message,
+      })
+    }
+  }
+
+  public async logout({ auth, response }: HttpContext) {
+    try {
+      const user = auth.user
+      if (!user) {
+        return response.status(401).json({ message: 'Usuário não autenticado' })
+      }
+
+      await this.userService.logoutUser(user.id)
+
+      return response.status(200).json({
+        message: 'Usuário deslogado com sucesso!',
       })
     } catch (error) {
       const status = error instanceof Error && 'status' in error ? (error.status as number) : 500

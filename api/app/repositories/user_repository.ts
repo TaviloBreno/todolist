@@ -73,4 +73,8 @@ export default class UserRepository {
 
     return user?.sharedTasks || []
   }
+
+  public async revokeToken(userId: number): Promise<void> {
+    await User.query().where('id', userId).update({ token: null })
+  }
 }

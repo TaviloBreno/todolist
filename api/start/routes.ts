@@ -28,6 +28,7 @@ Router.group(() => {
 
 Router.post('/register', '#controllers/http/user_controller.register')
 Router.post('/login', '#controllers/http/user_controller.login')
+Router.post('/logout', '#controllers/http/user_controller.logout')
 
 Router.get('/swagger', async () => {
   return AutoSwagger.default.docs(Router.toJSON(), swagger)

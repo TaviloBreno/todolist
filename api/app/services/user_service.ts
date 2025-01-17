@@ -39,6 +39,10 @@ export default class UserService {
     return { user, token }
   }
 
+  public async logoutUser(userId: number): Promise<void> {
+    await this.userRepository.revokeToken(userId)
+  }
+
   public async getAuthenticatedUserProfile(userId: number): Promise<User> {
     const user = await this.userRepository.getById(userId)
     if (!user) {
