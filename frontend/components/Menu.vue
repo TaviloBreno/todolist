@@ -4,7 +4,7 @@
       <li><a href="/">Início</a></li>
       <li><a href="/profile">Meu Perfil</a></li>
       <li><a href="/tasks">Minhas Tarefas</a></li>
-      <li><a href="/tasks/sharedwithme">Tarefas Compartilhadas</a></li>
+      <li><a href="/sharedwithme">Tarefas Compartilhadas</a></li>
       <li><a href="#" @click.prevent="logout">Sair</a></li>
     </ul>
   </nav>
