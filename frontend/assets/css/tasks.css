@@ -1,0 +1,85 @@
+.tasks-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.tasks-container h1 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.create-task-btn {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-task-btn:hover {
+  background-color: #0056b3;
+}
+
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tasks-table th,
+.tasks-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.tasks-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+}
+
+.action-btn.view {
+  background-color: #17a2b8;
+}
+
+.action-btn.edit {
+  background-color: #ffc107;
+}
+
+.action-btn.delete {
+  background-color: #dc3545;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+}
+
+.material-icons {
+  font-size: 20px;
+}

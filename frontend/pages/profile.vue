@@ -15,6 +15,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import "~/assets/css/profile.css";
 
 // Variáveis reativas
 const user = ref({});
@@ -64,32 +65,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.profile-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.profile-container h1 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  color: #333;
-}
-
-.profile-container p {
-  font-size: 1rem;
-  margin: 10px 0;
-  color: #555;
-}
-
-.profile-container strong {
-  color: #000;
-}
-</style>
