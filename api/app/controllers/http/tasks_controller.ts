@@ -198,21 +198,28 @@ export default class TasksController {
   }
 
   public async sharedWithMe({ auth, response }: HttpContext) {
-    console.log('sharedWithMe')
     try {
       const user = auth.user
       if (!user) {
         throw new BadRequestException('Usuário não autenticado.')
       }
 
-      const tasks = await user.related('sharedTasks').query()
+      // Busca as tarefas compartilhadas com o usuário
+      const tasks = await this.taskService.getSharedTasks(user.id)
 
       return response.status(200).json({
-        message: 'Tarefas compartilhadas com você listadas com sucesso!',
+        message: 'Tarefas compartilhadas listadas com sucesso!',
         data: tasks,
       })
     } catch (error) {
-      throw new NotFoundException('Tarefas compartilhadas com você não encontradas.')
+      if (error instanceof NotFoundException) {
+        return response.status(404).json({
+          message: error.message,
+        })
+      }
+      return response.status(500).json({
+        message: 'Erro ao listar tarefas compartilhadas.',
+      })
     }
   }
 }

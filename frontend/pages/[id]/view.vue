@@ -28,6 +28,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
+import "~/assets/css/view.css";
 
 const route = useRoute();
 const router = useRouter();
@@ -111,61 +112,3 @@ const statusLabel = (task) => {
 
 onMounted(fetchTask);
 </script>
-
-<style scoped>
-.view-task-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.view-task-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  color: #333;
-}
-
-.task-details p {
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #555;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  color: white;
-}
-
-.action-btn.edit {
-  background-color: #ffc107;
-}
-
-.action-btn.edit:hover {
-  background-color: #e0a800;
-}
-
-.action-btn.delete {
-  background-color: #dc3545;
-}
-
-.action-btn.delete:hover {
-  background-color: #c82333;
-}
-</style>

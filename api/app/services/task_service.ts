@@ -2,11 +2,16 @@ import TaskRepository from '../repositories/task_repository.js'
 import Task from '#models/task'
 import ValidationException from '#exceptions/e_validationexception'
 import NotFoundException from '#exceptions/e_notfoundexception'
+import User from '#models/user'
+import UserRepository from '../repositories/user_repository.js'
 
 export default class TaskService {
   private taskRepository: TaskRepository
 
+  private userRepository: UserRepository
+
   constructor() {
+    this.userRepository = new UserRepository()
     this.taskRepository = new TaskRepository()
   }
 
@@ -68,5 +73,25 @@ export default class TaskService {
     }
 
     return this.taskRepository.deleteById(id)
+  }
+
+  public async shareTask(taskId: number, userId: number, canEdit: boolean): Promise<void> {
+    const task = await this.taskRepository.getById(taskId)
+    if (!task) {
+      throw new NotFoundException('Tarefa não encontrada.')
+    }
+
+    const user = await this.userRepository.getById(userId)
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado.')
+    }
+
+    await this.taskRepository.shareTask(task.id, userId, canEdit)
+  }
+
+  public async getSharedTasks(userId: number): Promise<Task[]> {
+    const user = await User.findOrFail(userId)
+    const tasks = await user.related('sharedTasks').query()
+    return tasks
   }
 }

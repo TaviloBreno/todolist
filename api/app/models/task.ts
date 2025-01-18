@@ -46,4 +46,12 @@ export default class Task extends BaseModel {
     pivotColumns: ['can_edit'], // Apenas colunas existentes
   })
   public sharedWith!: ManyToMany<typeof User>
+
+  @manyToMany(() => Task, {
+    pivotTable: 'task_shares',
+    pivotForeignKey: 'shared_with_user_id',
+    pivotRelatedForeignKey: 'task_id',
+    pivotColumns: ['can_edit'],
+  })
+  public sharedTasks!: ManyToMany<typeof Task>
 }

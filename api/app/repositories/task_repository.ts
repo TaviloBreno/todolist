@@ -50,4 +50,13 @@ export default class TaskRepository {
     await task.delete()
     return true
   }
+
+  public async shareTask(taskId: number, userId: number, canEdit = false): Promise<void> {
+    const task = await Task.findOrFail(taskId)
+    await task.related('sharedWith').attach({
+      [userId]: {
+        can_edit: canEdit,
+      },
+    })
+  }
 }
