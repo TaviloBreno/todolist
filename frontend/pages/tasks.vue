@@ -109,7 +109,7 @@ const createTask = () => {
 };
 
 const viewTask = (id) => {
-  router.push(`/tasks/${id}`); // Redireciona para a página de visualização da tarefa
+  router.push(`/${id}/view`); // Redireciona para a página de visualização da tarefa
 };
 
 const editTask = (id) => {
