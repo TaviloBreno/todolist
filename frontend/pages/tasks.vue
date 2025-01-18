@@ -70,12 +70,13 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import "~/assets/css/tasks.css";
 
 // Dados reativos
 const tasks = ref([]);
-const userId = ref(null);
+const router = useRouter();
 
 // Função para buscar as tarefas do backend
 const fetchTasks = async () => {
@@ -104,15 +105,15 @@ const fetchTasks = async () => {
 
 // Funções para ações nas tarefas
 const createTask = () => {
-  window.location.href = "/create"; // Redireciona para a página de criação de tarefa
+  router.push("/create"); // Redireciona para a página de criação de tarefa
 };
 
 const viewTask = (id) => {
-  window.location.href = `/tasks/${id}`; // Redireciona para a página de visualização da tarefa
+  router.push(`/tasks/${id}`); // Redireciona para a página de visualização da tarefa
 };
 
 const editTask = (id) => {
-  window.location.href = `/tasks/${id}/edit`; // Redireciona para a página de edição da tarefa
+  router.push(`/${id}/edit`); // Redireciona para a página de edição da tarefa
 };
 
 const deleteTask = async (id) => {
